@@ -13,15 +13,12 @@ class UserGroup(models.Model):
 
 class User(AbstractUser):
     password = models.CharField(max_length=8, blank=True, default = ''.join(random.choice(string.ascii_lowercase) for i in range(8)))
-
     company = models.ForeignKey(
         UserGroup, on_delete=models.CASCADE, related_name="user_company"
     )
-
+    position = models.ForeignKey('data.Position', on_delete=models.CASCADE, related_name="user_position")
     def __str__(self):
         return f"{self.username}-{self.company}"
-
-
 
 
 class Position(models.Model):
@@ -31,7 +28,7 @@ class Position(models.Model):
     )
 
     def __str__(self):
-        return self.description
+        return self.display_name
 
 
 class PositionGroup(models.Model):
@@ -44,7 +41,7 @@ class PositionGroup(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=150)
     pos_group = models.ForeignKey(
-        Position, on_delete=models.CASCADE, related_name="position_group"
+        'data.PositionGroup', on_delete=models.CASCADE, related_name="product_position_group"
     )
     prod_group = models.ForeignKey(
         "data.ProductGroup", on_delete=models.CASCADE, related_name="product_group"
