@@ -22,11 +22,17 @@ CHANNEL_LAYERS = {
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
-    'teller',
-    'data',
+    # packages
+    "channels",
     "rest_framework",
     "corsheaders",
+
+    #application
+    "teller",
+    "data",
+    "base",
+
+    #default
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

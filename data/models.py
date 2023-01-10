@@ -1,22 +1,27 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+import random
+import string
 
 class UserGroup(models.Model):
     display_name = models.CharField(max_length=150, blank=True)
     company_name = models.CharField(max_length=150, blank=True)
 
     def __str__(self):
-        return f"{self.display_name}_{self.company_name}"
+        return f"{self.company_name}_{self.display_name}"
 
 
 class User(AbstractUser):
+    password = models.CharField(max_length=8, blank=True, default = ''.join(random.choice(string.ascii_lowercase) for i in range(8)))
+
     company = models.ForeignKey(
         UserGroup, on_delete=models.CASCADE, related_name="user_company"
     )
 
     def __str__(self):
         return f"{self.username}-{self.company}"
+
+
 
 
 class Position(models.Model):
