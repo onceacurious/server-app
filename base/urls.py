@@ -11,6 +11,7 @@ router.register(r'position-group', PositionGroupViewSet, basename='position-grou
 router.register(r'position', PositionViewSet, basename='position'),
 router.register(r'product-group', ProductGroupViewSet, basename='product-group'),
 router.register(r'product', ProductViewSet, basename='product'),
+router.register(r'user-level', UserLevelViewSet, basename='user-level')
 
 urlpatterns = router.urls
 
