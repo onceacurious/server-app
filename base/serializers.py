@@ -32,3 +32,19 @@ class ProductSerializer(ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+
+class UserLevelSerializer(ModelSerializer):
+    class Meta:
+        model = UserLevel
+        fields = '__all__'
+
+
+class UserUpdateDateSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['password', 'firs_name', 'last_name', 'email']
+
+class QueSerializer(ModelSerializer):
+    class Meta:
+        model = Que
+        fields = '__all__'

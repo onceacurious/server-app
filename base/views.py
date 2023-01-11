@@ -31,3 +31,8 @@ class ProductGroupViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+
+class UserLevelViewSet(viewsets.ModelViewSet):
+    serializer_class = UserLevelSerializer
+    queryset = UserLevel.objects.all()
+   
