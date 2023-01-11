@@ -6,7 +6,6 @@ class UserGroupSerializer(ModelSerializer):
         model = UserGroup
         fields = '__all__'
 
-
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
@@ -37,7 +36,6 @@ class UserLevelSerializer(ModelSerializer):
     class Meta:
         model = UserLevel
         fields = '__all__'
-
 
 class UserUpdateDateSerializer(ModelSerializer):
     class Meta:

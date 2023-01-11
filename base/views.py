@@ -6,8 +6,6 @@ from django.shortcuts import get_object_or_404
 from data.models import *
 from .serializers import *
 
-
-
 class UserGroupViewSet(viewsets.ModelViewSet):
     serializer_class = UserGroupSerializer
     queryset = UserGroup.objects.all()
