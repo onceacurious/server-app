@@ -1,15 +1,21 @@
 from pathlib import Path
+import json
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ASGI_APPLICATION = 'core.asgi.application'
 
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--+kge08d6+1^erkr$itn^sfr!j*yr_agv!go06c^x90du-i&bc'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+if DEBUG:
+    f = open("secret.json")
+    secret = json.load(f)
+    SECRET_KEY = secret["SECRET_KEY"]
+
+else:
+    SECRET_KEY = os.environ('SECRET_KEY')    
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -18,6 +24,8 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels.layers.InMemoryChannelLayer',
     }
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -72,20 +80,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -102,10 +102,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -115,14 +111,8 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
+STATICFILES_ROOT = 'static_files/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'data.User'
