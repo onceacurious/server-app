@@ -16,7 +16,7 @@ import base.routing
 application = ProtocolTypeRouter({
   'http':  get_asgi_application(),
   'websocket': AllowedHostsOriginValidator(
-    AuthMiddlewereStack(
+    AuthMiddlewareStack(
       URLRouter(
         base.routing.websocket_urlpatterns
       )
