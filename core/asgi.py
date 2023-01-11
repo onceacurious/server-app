@@ -14,6 +14,7 @@ django.setup()
 import base.routing
 
 application = ProtocolTypeRouter({
+  'http':  get_asgi_application(),
   'websocket': AllowedHostsOriginValidator(
     AuthMiddlewereStack(
       URLRuter(
@@ -21,7 +22,6 @@ application = ProtocolTypeRouter({
       )
     )
   ),
-  'http':  get_asgi_application()
 })
 
 
