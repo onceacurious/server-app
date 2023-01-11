@@ -40,7 +40,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     @action(details = False, methods = ['post', 'put'], url_path = 'upload')
     def upload(self, request, *args, **kwargs):
         csv_file = request.FILES['file']
-        reader = csv.DictReader(csv_file.read().decode('utf-8').splitlines()))
+        reader = csv.DictReader(csv_file.read().decode('utf-8').splitlines())
         for row in reader:
             _, created = Product.objects.get_or_create(name=row['name'],pos_group=row['pos_group'], prod_group=row['prod_group'])
         
