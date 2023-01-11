@@ -38,7 +38,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         'upload': 'upload'
     }
 
-    @action(details = False, methods = ['post', 'put'], url_path = 'upload')
+    @action(detail = False, methods = ['post', 'put'], url_path = 'upload')
     def upload(self, request, *args, **kwargs):
         csv_file = request.FILES['file']
         reader = csv.DictReader(csv_file.read().decode('utf-8').splitlines())
