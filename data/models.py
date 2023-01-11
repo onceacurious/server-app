@@ -4,11 +4,12 @@ import random
 import string
 
 class UserLevel(models.Model):
-    title = models.CharField(max_length=150, blank=True)
+    title = models.CharField(max_length=150, blank=True, unique=True)
     level = models.IntegerField(default=1, blank= True)
+    description = models.TextField(blank=True)
 
     def __str__(self):
-        return f'{self.title}-{self.level}'
+        return f'{self.title}:{self.level}'
 
 class UserGroup(models.Model):
     display_name = models.CharField(max_length=150, blank=True)
