@@ -6,6 +6,9 @@ from django.shortcuts import get_object_or_404
 from data.models import *
 from .serializers import *
 
+import csv
+
+
 class UserGroupViewSet(viewsets.ModelViewSet):
     serializer_class = UserGroupSerializer
     queryset = UserGroup.objects.all()
@@ -29,6 +32,19 @@ class ProductGroupViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+
+    action_map = {
+        'upload': 'upload'
+    }
+
+    @action(details = False, methods = ['post', 'put'], url_path = 'upload')
+    def upload(self, request, *args, **kwargs):
+        csv_file = request.FILES['file']
+        reader = csv.DictReader(csv_file.read().decode('utf-8').splitlines()))
+        for row in reader:
+            _, created = Product.objects.get_or_create(name=row['name'],pos_group=row['pos_group'], prod_group=row['prod_group'])
+        
+        return Response(status=status.HTTP_201_CREATED)
 
 class UserLevelViewSet(viewsets.ModelViewSet):
     serializer_class = UserLevelSerializer
