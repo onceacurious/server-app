@@ -1,6 +1,6 @@
 import django
 
-from channels.routing import ProtocolTypeRouter, URLRuter
+from channels.routing import ProtocolTypeRouter,URLRouter
 from channels.auth import AuthMiddlewereStack
 from channels.security.websocket import AllowedHostsOriginValidator
 import os
@@ -17,7 +17,7 @@ application = ProtocolTypeRouter({
   'http':  get_asgi_application(),
   'websocket': AllowedHostsOriginValidator(
     AuthMiddlewereStack(
-      URLRuter(
+      URLRouter(
         base.routing.websocket_urlpatterns
       )
     )
