@@ -31,7 +31,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 INSTALLED_APPS = [
     # packages
-    "channels",
+    "daphne",
     "rest_framework",
     "corsheaders",
 

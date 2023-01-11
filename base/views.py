@@ -8,6 +8,7 @@ from data.models import *
 from .serializers import *
 
 import csv
+import json
 
 
 class UserGroupViewSet(viewsets.ModelViewSet):
@@ -51,3 +52,17 @@ class UserLevelViewSet(viewsets.ModelViewSet):
     serializer_class = UserLevelSerializer
     queryset = UserLevel.objects.all()
    
+
+    @action(detail = False, methods = ['POST'], url_path = 'upload')
+    def upload(self, request, *args, **kwargs):        
+        csv_file = request.data
+        list = csv_file['file']
+        for x in list:
+            title = x[0].strip()
+            level = x[1].strip()
+            disc = x[2].strip()
+            if title == '' or level == '' or disc == '':
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            else:
+                _, created =  UserLevel.objects.get_or_create(title=title,level=level, description=disc)        
+        return Response(status=status.HTTP_201_CREATED)
