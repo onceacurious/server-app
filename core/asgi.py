@@ -1,7 +1,7 @@
 import django
 
 from channels.routing import ProtocolTypeRouter,URLRouter
-from channels.auth import AuthMiddlewereStack
+from channels.auth import AuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator
 import os
 
