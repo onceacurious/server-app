@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ASGI_APPLICATION = 'core.asgi.application'
 
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
     f = open("secret.json")
