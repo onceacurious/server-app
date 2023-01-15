@@ -22,10 +22,10 @@ class UserGroup(models.Model):
 class User(AbstractUser):
     password = models.CharField(max_length=8, blank=True, default = ''.join(random.choice(string.ascii_lowercase) for i in range(8)))
     company = models.ForeignKey(
-        UserGroup, on_delete=models.CASCADE, related_name="user_company"
+        UserGroup, on_delete=models.CASCADE, related_name="user_company", null=True
     )
-    position = models.ForeignKey('data.Position', on_delete=models.CASCADE, related_name="user_position")
-    level = models.ForeignKey('data.UserLevel', on_delete=models.CASCADE, related_name="user_level")
+    position = models.ForeignKey('data.Position', on_delete=models.CASCADE, related_name="user_position", null=True)
+    level = models.ForeignKey('data.UserLevel', on_delete=models.CASCADE, related_name="user_level", null=True)
 
 
     def __str__(self):
