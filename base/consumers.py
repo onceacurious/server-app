@@ -1,16 +1,30 @@
-from channels.consumer import SyncConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
+import json
 
+class BaseConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.action_name = "base"
 
-class EchoConsumer(SyncConsumer):
+        await self.channel_layer.group_add(
+            self.action_name,
+            self.channel_name
+        )
+        await self.accept()
 
-    def connect(self, event):
-        self.send({
-            "type": "websocket.accept",
-            "message": "WS connected"
-        })
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.action_name,
+            self.channel_name
+        )
 
-    def receive(self, event):
-        self.send({
-            "type": "websocket.send",
-            "text": event["text"],
-        })
+    async def receive(self, text_data=None):
+        text_data_json = json.loads(text_data)
+        data = text_data_json["data"]
+        print(data)
+        await self.channel_layer.group_send(
+            self.action_name, {"type": "base_data", "data": data}
+        )
+
+    async def base_data(self, event):
+        data = event["data"]
+        await self.send(text_data=json.dumps({"type": "base", "data": data}))
