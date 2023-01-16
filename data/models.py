@@ -78,7 +78,7 @@ class Que(models.Model):
     called_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_caller", null=True
     )
-    consumer_level = models.ForeignKey('data.Userlevel', on_delete=models.CASCADE)
+    consumer_level = models.ForeignKey('data.UserLevel', on_delete=models.CASCADE)
     generated_at = models.DateTimeField(auto_now=True, blank=True)
     transaction_date = models.DateTimeField(auto_now_add=True, blank=True)
 
