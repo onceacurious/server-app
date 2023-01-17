@@ -12,8 +12,8 @@ class UserLevel(models.Model):
         return f'{self.title}:{self.level}'
 
 class UserGroup(models.Model):
-    display_name = models.CharField(max_length=150, blank=True)
-    company_name = models.CharField(max_length=150, blank=True)
+    display_name = models.CharField(max_length=150, blank=True, unique=True)
+    company_name = models.CharField(max_length=150, blank=True, unique=True)
 
     def __str__(self):
         return f"{self.company_name}_{self.display_name}"
@@ -33,7 +33,7 @@ class User(AbstractUser):
 
 
 class Position(models.Model):
-    display_name = models.CharField(max_length=150)
+    display_name = models.CharField(max_length=150, unique=True)
     group = models.ForeignKey(
         "data.PositionGroup", on_delete=models.CASCADE, related_name="position_group"
     )
@@ -43,7 +43,7 @@ class Position(models.Model):
 
 
 class PositionGroup(models.Model):
-    title = models.CharField(max_length=150)
+    title = models.CharField(max_length=150, unique=True)
 
     def __str__(self):
         return self.title
@@ -63,7 +63,7 @@ class Product(models.Model):
 
 
 class ProductGroup(models.Model):
-    title = models.CharField(max_length=150)
+    title = models.CharField(max_length=150, unique=True)
 
     def __str__(self):
         return self.title
