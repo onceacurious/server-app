@@ -9,10 +9,22 @@ class UserGroupSerializer(ModelSerializer):
 
 
 class PositionSerializer(ModelSerializer):
+
+    group = PrimaryKeyRelatedField(many=False, queryset= PositionGroup.objects.all())
+    group_name = SerializerMethodField()
     class Meta:
         model = Position
-        fields = "__all__"
+        fields = ["id", "display_name", "group", "group_name"]
+        read_only_fields = ["id", "group_name"]
 
+    def create(self, validated_data):
+        group = validated_data.pop("group")
+        group_name = PositionGroup.objects.get(pk=group.id)
+        position = Position.objects.create(group=group_name)
+        return position
+
+    def get_group_name(self, obj):
+        return obj.group.title
 
 class UserSerializer(ModelSerializer):
     company = PrimaryKeyRelatedField(
@@ -32,7 +44,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["username", "first_name",
+        fields = ["id","username", "first_name",
                   "last_name", "company", "display_name", "position", "position_title", "level", "level_title"]
         read_only_fields = ["password", "display_name",
                             "position_title", "level_title"]
@@ -59,6 +71,7 @@ class UserSerializer(ModelSerializer):
 
 
 class PositionGroupSerializer(ModelSerializer):
+
     class Meta:
         model = PositionGroup
         fields = "__all__"

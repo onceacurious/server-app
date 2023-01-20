@@ -6,7 +6,7 @@ import string
 
 class UserLevel(models.Model):
     title = models.CharField(max_length=150, blank=True, unique=True)
-    level = models.IntegerField(default=1, blank=True, unique=True)
+    level = models.IntegerField(default=1, blank=True)
     description = models.TextField(blank=True)
 
     def __str__(self):
