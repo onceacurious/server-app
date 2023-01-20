@@ -3,30 +3,34 @@ from django.contrib.auth.models import AbstractUser
 import random
 import string
 
+
 class UserLevel(models.Model):
     title = models.CharField(max_length=150, blank=True, unique=True)
-    level = models.IntegerField(default=1, blank= True, unique=True)
+    level = models.IntegerField(default=1, blank=True, unique=True)
     description = models.TextField(blank=True)
 
     def __str__(self):
         return f'{self.title}:{self.level}'
 
+
 class UserGroup(models.Model):
     display_name = models.CharField(max_length=150, blank=True, unique=True)
-    company_name = models.CharField(max_length=150, blank=True, unique=True)
+    company_name = models.CharField(max_length=150, blank=True)
 
     def __str__(self):
-        return f"{self.company_name}_{self.display_name}"
+        return f"{self.company_name}:{self.display_name}"
 
 
 class User(AbstractUser):
-    password = models.CharField(max_length=8, blank=True, default = ''.join(random.choice(string.ascii_lowercase) for i in range(8)))
+    password = models.CharField(max_length=8, blank=True, default=''.join(
+        random.choice(string.ascii_lowercase) for i in range(8)))
     company = models.ForeignKey(
         UserGroup, on_delete=models.CASCADE, related_name="user_company", null=True
     )
-    position = models.ForeignKey('data.Position', on_delete=models.CASCADE, related_name="user_position", null=True)
-    level = models.ForeignKey('data.UserLevel', on_delete=models.CASCADE, related_name="user_level", null=True)
-
+    position = models.ForeignKey(
+        'data.Position', on_delete=models.CASCADE, related_name="user_position", null=True)
+    level = models.ForeignKey(
+        'data.UserLevel', on_delete=models.CASCADE, related_name="user_level", null=True)
 
     def __str__(self):
         return f"{self.username}-{self.level}:{self.company}"
@@ -78,7 +82,8 @@ class Que(models.Model):
     called_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_caller", null=True
     )
-    consumer_level = models.ForeignKey('data.UserLevel', on_delete=models.CASCADE)
+    consumer_level = models.ForeignKey(
+        'data.UserLevel', on_delete=models.CASCADE)
     generated_at = models.DateTimeField(auto_now=True, blank=True)
     transaction_date = models.DateTimeField(auto_now_add=True, blank=True)
 

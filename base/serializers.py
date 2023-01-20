@@ -19,20 +19,43 @@ class UserSerializer(ModelSerializer):
         many=False, queryset=UserGroup.objects.all())
     display_name = SerializerMethodField()
 
+    position = PrimaryKeyRelatedField(
+        many=False, queryset=Position.objects.all()
+    )
+    position_title = SerializerMethodField()
+
+    level = PrimaryKeyRelatedField(
+        many=False, queryset=UserLevel.objects.all()
+    )
+
+    level_title = SerializerMethodField()
+
     class Meta:
         model = User
         fields = ["username", "first_name",
-                  "last_name", "company", "display_name", "position", "level"]
-        read_only_fields = ["password", "display_name"]
+                  "last_name", "company", "display_name", "position", "position_title", "level", "level_title"]
+        read_only_fields = ["password", "display_name",
+                            "position_title", "level_title"]
 
     def create(self, validated_data):
         user_group = validated_data.pop("company")
         company = UserGroup.objects.get(pk=user_group.id)
-        user = User.objects.create(company=company, **validated_data)
+        position_title = validated_data.pop("position")
+        position = Position.objects.get(pk=position_title.id)
+        level_title = validated_data.pop("level")
+        level = UserLevel.objects.get(pk=level_title.id)
+        user = User.objects.create(
+            company=company, position=position, level=level, **validated_data)
         return user
 
     def get_display_name(self, obj):
         return obj.company.display_name
+
+    def get_position_title(self, obj):
+        return obj.position.display_name
+
+    def get_level_title(self, obj):
+        return obj.level.title
 
 
 class PositionGroupSerializer(ModelSerializer):
