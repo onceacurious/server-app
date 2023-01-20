@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, PrimaryKeyRelatedField, StringRelatedField
 from data.models import *
 
 
@@ -15,13 +15,24 @@ class PositionSerializer(ModelSerializer):
 
 
 class UserSerializer(ModelSerializer):
-    company = UserGroupSerializer()
-    position = PositionSerializer()
+    company = PrimaryKeyRelatedField(
+        many=False, queryset=UserGroup.objects.all())
+    display_name = SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "company", "position"]
-        read_only_fields = ["password", "company", "position"]
+        fields = ["username", "first_name",
+                  "last_name", "company", "display_name", "position", "level"]
+        read_only_fields = ["password", "display_name"]
+
+    def create(self, validated_data):
+        user_group = validated_data.pop("company")
+        company = UserGroup.objects.get(pk=user_group.id)
+        user = User.objects.create(company=company, **validated_data)
+        return user
+
+    def get_display_name(self, obj):
+        return obj.company.display_name
 
 
 class PositionGroupSerializer(ModelSerializer):
