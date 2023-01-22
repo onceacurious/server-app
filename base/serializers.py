@@ -15,12 +15,14 @@ class PositionSerializer(ModelSerializer):
     class Meta:
         model = Position
         fields = ["id", "display_name", "group", "group_name"]
+        ordering_fields = ["display_name"]
         read_only_fields = ["id", "group_name"]
 
     def create(self, validated_data):
         group = validated_data.pop("group")
+        display_name = validated_data.pop("display_name")
         group_name = PositionGroup.objects.get(pk=group.id)
-        position = Position.objects.create(group=group_name)
+        position = Position.objects.create(group=group_name, display_name= display_name.strip().lower())
         return position
 
     def get_group_name(self, obj):
@@ -75,6 +77,11 @@ class PositionGroupSerializer(ModelSerializer):
     class Meta:
         model = PositionGroup
         fields = "__all__"
+
+    def create(self, validated_data):
+        title = validated_data.pop("title")
+        position_group = PositionGroup.objects.create(title=title.strip().lower(), **validated_data)
+        return position_group
 
 
 class ProductGroupSerializer(ModelSerializer):

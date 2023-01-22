@@ -42,6 +42,10 @@ class Position(models.Model):
         "data.PositionGroup", on_delete=models.CASCADE, related_name="position_group"
     )
 
+    class Meta:
+        pass
+        # ordering = ["group_name"]
+
     def __str__(self):
         return self.display_name
 
