@@ -1,14 +1,11 @@
 from rest_framework.response import Response
-from rest_framework import viewsets
-from rest_framework import status  
-from django.shortcuts import get_object_or_404, render
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 
 from data.models import *
 from .serializers import *
 
 import csv
-import json
 
 
 class UserGroupViewSet(viewsets.ModelViewSet):
@@ -29,11 +26,11 @@ class PositionViewSet(viewsets.ModelViewSet):
 
 class ProductGroupViewSet(viewsets.ModelViewSet):
     serializer_class = ProductGroupSerializer
-    queryset = ProductGroup.objects.all()
+    queryset = ProductGroup.objects.all().order_by("title")
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by("name")
 
     action_map = {
         'upload': 'upload'

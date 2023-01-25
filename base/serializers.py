@@ -15,7 +15,6 @@ class PositionSerializer(ModelSerializer):
     class Meta:
         model = Position
         fields = ["id", "display_name", "group", "group_name"]
-        ordering_fields = ["display_name"]
         read_only_fields = ["id", "group_name"]
 
     def create(self, validated_data):
@@ -91,9 +90,25 @@ class ProductGroupSerializer(ModelSerializer):
 
 
 class ProductSerializer(ModelSerializer):
+    product_group = PrimaryKeyRelatedField(many=False, queryset = ProductGroup.objects.all())
+    group_name = SerializerMethodField()
     class Meta:
         model = Product
-        fields = "__all__"
+        fields = ["id", "name", "description", "product_group", "group_name"]
+        read_only_fields = ["id", "group_name"]
+
+    def create(self, validated_data):
+        group = validated_data.pop("product_group")
+        group_name = ProductGroup.objects.get(pk=group.id)
+        name = validated_data.pop("name").strip().lower()
+        description = validated_data.pop("description").strip().lower()
+        product = Product.objects.create(
+            group_name=group_name, name=name, description=description
+        )
+        return product
+
+    def get_group_name(self, obj):
+        return obj.product_group.title
 
 
 class UserLevelSerializer(ModelSerializer):
