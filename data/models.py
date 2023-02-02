@@ -59,8 +59,8 @@ class PositionGroup(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=150)
-    pos_group = models.ForeignKey(
-        'data.PositionGroup', on_delete=models.CASCADE, related_name="product_position_group"
+    pos_group = models.ManyToManyField(
+        'data.PositionGroup', related_name="product_position_group"
     )
     prod_group = models.ForeignKey(
         "data.ProductGroup", on_delete=models.CASCADE, related_name="product_group"
