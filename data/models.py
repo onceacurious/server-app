@@ -59,6 +59,7 @@ class PositionGroup(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=150)
+    description = models.TextField(null=True, blank=True)
     pos_group = models.ManyToManyField(
         'data.PositionGroup', related_name="product_position_group"
     )
