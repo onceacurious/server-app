@@ -95,27 +95,27 @@ class ProductGroupSerializer(ModelSerializer):
 
 
 class ProductSerializer(ModelSerializer):
-    pos_group = PrimaryKeyRelatedField(
-        many=True, queryset=PositionGroup.objects.all())
-    prod_name = SerializerMethodField()
+    prod_group = PrimaryKeyRelatedField(
+        many=False, queryset=ProductGroup.objects.all())
+    group_name = SerializerMethodField()
 
     class Meta:
         model = Product
         fields = ["id", "name", "description",
-                  "prod_group", "prod_name", "pos_group"]
-        read_only_fields = ["id", "prod_name"]
+                  "prod_group", "group_name", "pos_group"]
+        read_only_fields = ["id", "group_name"]
 
     def create(self, validated_data):
         group = validated_data.pop("prod_group")
-        prod_group = ProductGroup.objects.get(pk=group.id)
+        group_name = ProductGroup.objects.get(pk=group.id)
         name = validated_data.pop("name").strip().lower()
         description = validated_data.pop("description").strip().lower()
         product = Product.objects.create(
-            prod_group=prod_group, name=name, description=description
+            prod_group=group_name, name=name, description=description
         )
         return product
 
-    def get_prod_name(self, obj):
+    def get_group_name(self, obj):
         return obj.prod_group.title
 
 

@@ -51,7 +51,8 @@ class Position(models.Model):
 
 
 class PositionGroup(models.Model):
-    title = models.CharField(max_length=150, unique=True)
+    title = models.CharField(max_length=150, unique=True,
+                             help_text="position group like loan, teller, open account")
 
     def __str__(self):
         return self.title
@@ -72,7 +73,7 @@ class Product(models.Model):
 
 
 class ProductGroup(models.Model):
-    title = models.CharField(max_length=150, unique=True)
+    title = models.CharField(max_length=150, unique=True, help_text="")
 
     def __str__(self):
         return self.title
