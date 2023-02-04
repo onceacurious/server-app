@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "teller",
     "data",
     "base",
-    "post",
 
     # default
     'django.contrib.admin',
