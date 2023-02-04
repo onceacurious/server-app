@@ -1,6 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
+
 class BaseConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.action_name = "base"
@@ -20,7 +21,6 @@ class BaseConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data=None):
         text_data_json = json.loads(text_data)
         data = text_data_json["data"]
-        print(data)
         await self.channel_layer.group_send(
             self.action_name, {"type": "base_data", "data": data}
         )
