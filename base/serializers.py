@@ -108,16 +108,16 @@ class ProductSerializer(ModelSerializer):
 
     def create(self, validated_data):
         group = validated_data.pop("prod_group")
-        pos_groups = validated_data.pop("pos_group")
+        # pos_groups = validated_data.pop("pos_groups")
         group_name = ProductGroup.objects.get(pk=group.id)
         name = validated_data.pop("name").strip().lower()
         description = validated_data.pop("description").strip().lower()
         product = Product.objects.create(
-            prod_group = group_name, nama=name, description=description, **validated_data
-        )
+            prod_group=group_name, name=name, description=description, **validated_data)
         for pos_group_data in pos_groups:
-            pos_group, created = Position.objects.get_or_create(**pos_group_data)
-            product.pos_groups.add(pos_group)    
+            pos_groups, created = Position.objects.get_or_create(
+                **pos_group_data)
+            product.pos_groups.add(pos_groups)
         return product
 
     def get_group_name(self, obj):
