@@ -14,7 +14,7 @@ if DEBUG:
     SECRET_KEY = secret["SECRET_KEY"]
 
 else:
-    SECRET_KEY = os.environ["SECRET_KEY"] 
+    SECRET_KEY = os.environ["SECRET_KEY"]
 
 
 ALLOWED_HOSTS = ['*']
@@ -35,12 +35,13 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
 
-    #application
+    # application
     "teller",
     "data",
     "base",
+    "post",
 
-    #default
+    # default
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
