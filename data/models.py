@@ -61,22 +61,12 @@ class PositionGroup(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
-    pos_groups = models.ManyToManyField(
-        'data.Position', related_name="product_position_group"
-    )
-    prod_group = models.ForeignKey(
-        "data.ProductGroup", on_delete=models.CASCADE, related_name="product_group"
+    position = models.ManyToManyField(
+        Position, related_name="position", blank=True
     )
 
     def __str__(self):
         return self.name
-
-
-class ProductGroup(models.Model):
-    title = models.CharField(max_length=150, unique=True, help_text="")
-
-    def __str__(self):
-        return self.title
 
 
 class Que(models.Model):

@@ -88,40 +88,28 @@ class PositionGroupSerializer(ModelSerializer):
         return position_group
 
 
-class ProductGroupSerializer(ModelSerializer):
-    class Meta:
-        model = ProductGroup
-        fields = "__all__"
-
-
 class ProductSerializer(ModelSerializer):
-    pos_groups = PositionSerializer(many=True)
-    prod_group = PrimaryKeyRelatedField(
-        many=False, queryset=ProductGroup.objects.all())
-    group_name = SerializerMethodField()
+    position = PrimaryKeyRelatedField(
+        many=True, queryset=Position.objects.all())
 
     class Meta:
         model = Product
-        fields = ["id", "name", "description",
-                  "prod_group", "group_name", "pos_groups"]
-        read_only_fields = ["id", "group_name"]
+        fields = [
+            "id", "name", "description", "position"
+        ]
+        read_only_fields = ["id"]
 
     def create(self, validated_data):
-        group = validated_data.pop("prod_group")
-        # pos_groups = validated_data.pop("pos_groups")
-        group_name = ProductGroup.objects.get(pk=group.id)
+
+        positions = validated_data.pop("position")
         name = validated_data.pop("name").strip().lower()
         description = validated_data.pop("description").strip().lower()
         product = Product.objects.create(
-            prod_group=group_name, name=name, description=description, **validated_data)
-        for pos_group_data in pos_groups:
-            pos_groups, created = Position.objects.get_or_create(
-                **pos_group_data)
-            product.pos_groups.add(pos_groups)
+            name=name, description=description, **validated_data)
+        for position in positions:
+            position = Position.objects.get(pk=position.id)
+            product.position.add(position)
         return product
-
-    def get_group_name(self, obj):
-        return obj.prod_group.title
 
 
 class UserLevelSerializer(ModelSerializer):

@@ -28,11 +28,6 @@ class PositionViewSet(viewsets.ModelViewSet):
     queryset = Position.objects.all().order_by("group", "display_name")
 
 
-class ProductGroupViewSet(viewsets.ModelViewSet):
-    serializer_class = ProductGroupSerializer
-    queryset = ProductGroup.objects.all().order_by("title")
-
-
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all().order_by("name")
