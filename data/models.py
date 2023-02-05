@@ -61,6 +61,10 @@ class Product(models.Model):
         Position, related_name="position", blank=True
     )
 
+    @property
+    def positions(self):
+        return self.position.values_list("display_name", flat=True)
+
     def __str__(self):
         return self.name
 
